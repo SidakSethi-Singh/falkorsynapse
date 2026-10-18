@@ -5,6 +5,10 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Hackathon](https://img.shields.io/badge/Graph%20Hacks-2026%20Winner-06b6d4.svg)](https://wemakedevs.org)
 [![Tracks](https://img.shields.io/badge/Tracks-01%20%7C%2002%20%7C%2003-emerald.svg)](#hackathon-tracks-entered)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-falkorsynapse.onrender.com-brightgreen?style=flat-square&logo=render)](https://falkorsynapse.onrender.com/)
+
+> 🚀 **Live Cloud Demo:** Access the live interactive deployment at **[https://falkorsynapse.onrender.com/](https://falkorsynapse.onrender.com/)**  
+> 📺 **Video Walkthrough:** [YouTube Demo](https://youtu.be/SfKbu4ZB8BA) | 📖 **Deep Dive Article:** [Dev.to Blog](https://dev.to/sidaksethisingh/why-vector-rag-fails-ai-agents-building-an-autonomous-sre-swarm-with-falkordb-4303)
 
 > **"If you take FalkorDB out, the product cannot function."**  
 > FalkorSynapse is built strictly around Rule 3 of the Graph Hacks Hackathon. It does not treat the graph database as an ornamental vector store. FalkorDB's multi-hop Cypher traversals, in-memory graph algorithms (PageRank, Shortest Path), and isolated multigraph memory are the **active context engine** driving every decision, blast radius assessment, and autonomous mitigation across an enterprise microservices mesh.
@@ -181,4 +185,16 @@ In accordance with Rule 11 of the Graph Hacks Hackathon, AI coding assistants (A
 
 ---
 
+## 🌐 Live Deployment & Cloud Access
+
+FalkorSynapse is deployed live and fully interactive in the cloud:
+
+* **Live Interactive Application:** [https://falkorsynapse.onrender.com/](https://falkorsynapse.onrender.com/)
+* **Interactive Swagger API Docs:** [https://falkorsynapse.onrender.com/docs](https://falkorsynapse.onrender.com/docs)
+* **Real-time Health Check:** [https://falkorsynapse.onrender.com/api/health](https://falkorsynapse.onrender.com/api/health)
+* **Graph API State Endpoint:** [https://falkorsynapse.onrender.com/api/graph](https://falkorsynapse.onrender.com/api/graph)
+
+---
+
 ### *FalkorSynapse: Context is not decoration. The graph is the engine.*
+
