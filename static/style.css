@@ -161,17 +161,28 @@ body {
   gap: 10px;
 }
 
+select {
+  color-scheme: dark;
+}
+
+select option {
+  background-color: #161228 !important;
+  color: #f8fafc !important;
+  padding: 8px 10px;
+}
+
 .hud-select {
-  background: var(--bg-surface-elevated);
-  color: var(--text-primary);
+  background: #1a1530;
+  color: #ffffff;
   border: 1px solid var(--border-card);
   padding: 7px 12px;
   border-radius: var(--radius-sm);
   font-size: 0.80rem;
   font-family: var(--font-body);
-  font-weight: 500;
+  font-weight: 600;
   outline: none;
   cursor: pointer;
+  color-scheme: dark;
 }
 
 .hud-select:focus {
@@ -286,27 +297,36 @@ body {
 .path-finder-mini {
   display: flex;
   align-items: center;
-  gap: 5px;
-  background: var(--bg-surface-elevated);
-  padding: 3px 8px;
+  gap: 6px;
+  background: #0f0b1e;
+  padding: 4px 8px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-card);
 }
 
 .mini-select {
-  background: transparent;
-  color: var(--text-primary);
-  border: none;
+  background: #19142f;
+  color: var(--hack-yellow);
+  border: 1px solid var(--border-card);
+  border-radius: 4px;
+  padding: 3px 6px;
   font-size: 0.72rem;
   font-family: var(--font-body);
+  font-weight: 600;
   outline: none;
   cursor: pointer;
-  max-width: 105px;
+  max-width: 130px;
+  color-scheme: dark;
+}
+
+.mini-select:focus {
+  border-color: var(--hack-cyan);
 }
 
 .path-arrow {
   color: var(--hack-cyan);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
+  font-weight: 700;
 }
 
 .chip-flat {
