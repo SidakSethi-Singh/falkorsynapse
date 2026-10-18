@@ -63,6 +63,28 @@
             <h2 class="panel-title">Enterprise Infrastructure Mesh</h2>
             <span class="panel-sub" id="mesh-stats">Loading nodes...</span>
           </div>
+          
+          <!-- Path & Zoom Controls -->
+          <div class="canvas-controls">
+            <div class="path-finder-mini">
+              <select id="path-source-select" class="mini-select" aria-label="Select Source Node">
+                <option value="">Start Node...</option>
+              </select>
+              <span class="path-arrow">➔</span>
+              <select id="path-target-select" class="mini-select" aria-label="Select Target Node">
+                <option value="">End Node...</option>
+              </select>
+              <button id="btn-find-path" class="chip-btn chip-accent">Find Path</button>
+            </div>
+            <div class="zoom-btn-group">
+              <button id="btn-zoom-in" class="mini-icon-btn" title="Zoom In">+</button>
+              <button id="btn-zoom-out" class="mini-icon-btn" title="Zoom Out">-</button>
+              <button id="btn-zoom-reset" class="mini-icon-btn" title="Reset View">⌖</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="graph-legend-bar">
           <div class="graph-legend">
             <span class="legend-item"><span class="legend-dot dot-svc"></span> Service</span>
             <span class="legend-item"><span class="legend-dot dot-db"></span> Database</span>
@@ -71,9 +93,10 @@
             <span class="legend-item"><span class="legend-dot dot-pr"></span> PullRequest</span>
             <span class="legend-item"><span class="legend-dot dot-runbook"></span> Runbook</span>
           </div>
+          <span class="legend-hint">Tip: Drag any node to reposition • Hover to inspect</span>
         </div>
 
-        <div class="graph-viewport-wrapper">
+        <div class="graph-viewport-wrapper" id="graph-wrapper">
           <svg id="graph-svg" class="graph-svg"></svg>
           
           <!-- Floating Node Info Drawer -->
@@ -93,6 +116,7 @@
       <section class="hud-panel reasoning-panel">
         <div class="tabs-header">
           <button class="tab-btn active" data-tab="tab-triage">Swarm Reasoning</button>
+          <button class="tab-btn" data-tab="tab-chat">Ask Mesh (GraphRAG)</button>
           <button class="tab-btn" data-tab="tab-cypher">Live Cypher Console</button>
           <button class="tab-btn" data-tab="tab-memory">Episodic Memory</button>
         </div>
@@ -159,12 +183,39 @@
             </div>
           </div>
 
-          <!-- Tab 2: Live Cypher Terminal -->
+          <!-- Tab 2: Ask Mesh (Natural Language GraphRAG Chat) -->
+          <div id="tab-chat" class="tab-content">
+            <div class="chat-intro">
+              <span class="chat-badge">FalkorDB GraphRAG Engine</span>
+              <p>Ask anything about your architecture, dependencies, team owners, or past outages. Queries are translated to Cypher traversals in real-time.</p>
+            </div>
+
+            <div class="chat-prompt-chips">
+              <button class="chat-chip" data-prompt="What breaks if Postgres LedgerDB goes down?">💥 What breaks if LedgerDB goes down?</button>
+              <button class="chat-chip" data-prompt="Who owns Payments Core and who is currently on call?">👤 Who owns Payments Core & on-call?</button>
+              <button class="chat-chip" data-prompt="How is Checkout Flow connected to Postgres LedgerDB?">🔗 Checkout Flow to LedgerDB route?</button>
+              <button class="chat-chip" data-prompt="Did we have any past incident on Redis before?">🧠 Past incident on Redis token cache?</button>
+              <button class="chat-chip" data-prompt="Which services are the biggest single points of failure?">⚡ Top single points of failure (PageRank)?</button>
+            </div>
+
+            <div id="chat-messages" class="chat-messages-box">
+              <div class="chat-msg msg-assistant">
+                <strong>Synapse AI:</strong> Hello! Ask me any question about your enterprise infrastructure mesh. I will query FalkorDB in sub-milliseconds and show you the exact graph paths and Cypher.
+              </div>
+            </div>
+
+            <form id="chat-form" class="chat-input-bar">
+              <input id="chat-input" type="text" class="chat-input" placeholder="Ask a question (e.g. 'Who owns Kafka?', 'What breaks if Auth fails?')..." />
+              <button type="submit" class="hud-btn btn-primary">Ask Mesh</button>
+            </form>
+          </div>
+
+          <!-- Tab 3: Live Cypher Terminal -->
           <div id="tab-cypher" class="tab-content">
             <div class="cypher-toolbar">
               <span class="cypher-label">Quick Cypher Queries:</span>
               <div class="cypher-shortcuts">
-                <button class="chip-btn" data-query="MATCH (p:Person)-[:WORKED_ON]->(:Project) RETURN p">Who knows what?</button>
+                <button class="chip-btn" data-query="MATCH (e:Engineer)-[:PRIMARY_ARCHITECT|SCHEMA_OWNER]->(s) RETURN e.name, s.name">Who knows what?</button>
                 <button class="chip-btn" data-query="MATCH path = (root:Database {id: 'infra_postgres_ledger'})-[*1..3]->(downstream) RETURN downstream">Blast Radius of LedgerDB</button>
                 <button class="chip-btn" data-query="MATCH (inc:PastIncident)-[:RESOLVED_BY]->(rb:Runbook) RETURN inc.name, rb.name">Historical Resolutions</button>
                 <button class="chip-btn" data-query="MATCH (pr:PullRequest)-[:MODIFIES_CONFIG]->(t) RETURN pr.name, t.name">Recent Deploys & PRs</button>
@@ -185,7 +236,7 @@
             </div>
           </div>
 
-          <!-- Tab 3: Episodic Memory Timeline -->
+          <!-- Tab 4: Episodic Memory Timeline -->
           <div id="tab-memory" class="tab-content">
             <div class="memory-container">
               <h3>FalkorDB Persistent Memory Graph</h3>

@@ -224,6 +224,38 @@ class FalkorGraphEngine:
         except (nx.NetworkXNoPath, nx.NodeNotFound):
             return None
 
+    def find_shortest_path_details(self, source_id: str, target_id: str) -> Dict[str, Any]:
+        """Finds shortest path with rich node names, relationship types, and hops"""
+        path_nodes = self.find_shortest_causal_path(source_id, target_id)
+        if not path_nodes:
+            # Try undirected if directed path doesn't exist
+            try:
+                undirected = self.nx_graph.to_undirected()
+                path_nodes = nx.shortest_path(undirected, source=source_id, target=target_id)
+            except Exception:
+                return {"found": False, "source": source_id, "target": target_id, "path": [], "hops": 0}
+
+        steps = []
+        for i in range(len(path_nodes) - 1):
+            u, v = path_nodes[i], path_nodes[i+1]
+            edge_data = self.nx_graph.get_edge_data(u, v) or self.nx_graph.get_edge_data(v, u) or {}
+            steps.append({
+                "from": self.node_store.get(u, {}).get("name", u),
+                "from_id": u,
+                "relationship": edge_data.get("type", "CONNECTED_TO"),
+                "to": self.node_store.get(v, {}).get("name", v),
+                "to_id": v
+            })
+
+        return {
+            "found": True,
+            "source": source_id,
+            "target": target_id,
+            "hops": len(path_nodes) - 1,
+            "nodes": [self.node_store.get(nid, {"id": nid, "name": nid}) for nid in path_nodes],
+            "steps": steps
+        }
+
     def get_full_graph(self) -> Dict[str, Any]:
         """Serializes current graph state for interactive visualization & frontend display"""
         nodes = list(self.node_store.values())

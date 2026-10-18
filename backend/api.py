@@ -80,6 +80,19 @@ def run_custom_cypher(req: CypherQueryRequest):
     res = engine.execute_cypher(req.query, req.params)
     return res
 
+from .agents.chat_agent import chat_agent
+
+class AskRequest(BaseModel):
+    question: str
+
+@app.post("/api/ask")
+def ask_mesh(req: AskRequest):
+    return chat_agent.ask(req.question)
+
+@app.get("/api/shortest-path")
+def get_shortest_path(source: str, target: str):
+    return engine.find_shortest_path_details(source, target)
+
 @app.post("/api/reset")
 def reset_graph():
     seed_enterprise_mesh()
