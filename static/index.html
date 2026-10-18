@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FalkorSynapse | Autonomous Graph-Native SRE Swarm</title>
+  <meta name="description" content="Autonomous Multi-Agent Incident Response & Enterprise Brain with FalkorDB Graph Context Layer">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="hud-container">
+    <!-- Top Navigation Bar -->
+    <header class="hud-header">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3" fill="#8b5cf6"></circle>
+            <circle cx="4" cy="6" r="2" fill="#06b6d4"></circle>
+            <circle cx="20" cy="6" r="2" fill="#10b981"></circle>
+            <circle cx="4" cy="18" r="2" fill="#ec4899"></circle>
+            <circle cx="20" cy="18" r="2" fill="#f59e0b"></circle>
+            <path d="M6 7l4 3.5M18 7l-4 3.5M6 17l4-3.5M18 17l-4-3.5"></path>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">FalkorSynapse</h1>
+          <span class="brand-tag">Autonomous SRE Swarm • Powered by FalkorDB</span>
+        </div>
+      </div>
+
+      <div class="header-badges">
+        <div class="badge badge-track">
+          <span class="indicator-dot dot-track"></span>
+          Tracks: 01 Connected Data • 02 Memory • 03 Company Brain
+        </div>
+        <div id="driver-status-badge" class="badge badge-status">
+          <span class="indicator-dot dot-green"></span>
+          <span id="driver-status-text">FalkorDB Engine: Active</span>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <select id="scenario-select" class="hud-select" aria-label="Select Outage Simulation Scenario">
+          <option value="infra_postgres_ledger">Simulate Outage: Postgres LedgerDB (SEV-1)</option>
+          <option value="infra_kafka_tx">Simulate Outage: Kafka Event Bus (SEV-1)</option>
+          <option value="svc_payments_core">Simulate Outage: Payments Core Service</option>
+          <option value="svc_auth_iam">Simulate Outage: Auth & IAM Cluster</option>
+        </select>
+        <button id="btn-trigger-outage" class="hud-btn btn-danger">⚡ Trigger Outage</button>
+        <button id="btn-reset-mesh" class="hud-btn btn-outline" title="Reset Mesh">↺ Reset</button>
+      </div>
+    </header>
+
+    <!-- Main Grid Layout -->
+    <main class="hud-main">
+      <!-- Left: Interactive Graph Visualization Canvas -->
+      <section class="hud-panel graph-panel">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <h2 class="panel-title">Enterprise Infrastructure Mesh</h2>
+            <span class="panel-sub" id="mesh-stats">Loading nodes...</span>
+          </div>
+          <div class="graph-legend">
+            <span class="legend-item"><span class="legend-dot dot-svc"></span> Service</span>
+            <span class="legend-item"><span class="legend-dot dot-db"></span> Database</span>
+            <span class="legend-item"><span class="legend-dot dot-broker"></span> MessageBroker</span>
+            <span class="legend-item"><span class="legend-dot dot-eng"></span> Engineer</span>
+            <span class="legend-item"><span class="legend-dot dot-pr"></span> PullRequest</span>
+            <span class="legend-item"><span class="legend-dot dot-runbook"></span> Runbook</span>
+          </div>
+        </div>
+
+        <div class="graph-viewport-wrapper">
+          <svg id="graph-svg" class="graph-svg"></svg>
+          
+          <!-- Floating Node Info Drawer -->
+          <div id="node-inspector" class="node-inspector hidden">
+            <div class="inspector-header">
+              <h3 id="inspector-name">Node Name</h3>
+              <button id="btn-close-inspector" class="btn-icon">×</button>
+            </div>
+            <div class="inspector-body" id="inspector-content">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Swarm Reasoning & Execution HUD -->
+      <section class="hud-panel reasoning-panel">
+        <div class="tabs-header">
+          <button class="tab-btn active" data-tab="tab-triage">Swarm Reasoning</button>
+          <button class="tab-btn" data-tab="tab-cypher">Live Cypher Console</button>
+          <button class="tab-btn" data-tab="tab-memory">Episodic Memory</button>
+        </div>
+
+        <div class="tab-content-container">
+          <!-- Tab 1: Live Multi-Agent Swarm Triage Feed -->
+          <div id="tab-triage" class="tab-content active">
+            <div id="triage-empty" class="empty-state">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6v6l4 2"></path>
+              </svg>
+              <p>System Operating Normally • Mesh Monitoring Active</p>
+              <span class="empty-hint">Select a scenario above and click <strong>Trigger Outage</strong> to watch the 3-agent swarm reason across FalkorDB.</span>
+            </div>
+
+            <div id="triage-results" class="triage-feed hidden">
+              <!-- Incident Banner -->
+              <div class="incident-card" id="incident-card">
+                <div class="incident-card-top">
+                  <span class="severity-pill" id="incident-sev">CRITICAL SEV-1</span>
+                  <span class="incident-time" id="incident-elapsed">Execution: 42ms</span>
+                </div>
+                <h3 class="incident-headline" id="incident-headline">Incident Triage in Progress...</h3>
+                <p class="incident-summary" id="incident-summary"></p>
+                <div class="mitigation-action-box" id="mitigation-box">
+                  <div class="action-info">
+                    <span class="action-label">AUTONOMOUS RECOMMENDATION:</span>
+                    <strong id="recommended-action-text">Execute Runbook</strong>
+                  </div>
+                  <button id="btn-apply-mitigation" class="hud-btn btn-success">✓ Auto-Mitigate & Update Graph</button>
+                </div>
+              </div>
+
+              <!-- Multi-Agent Trace Accordion -->
+              <div class="agent-trace-list">
+                <!-- Agent 1 Card -->
+                <div class="agent-step-card card-topo">
+                  <div class="step-card-header">
+                    <span class="agent-tag">TRACK 1 • TOPOLOGY SENTINEL</span>
+                    <span class="status-indicator">Graph Traversal Complete</span>
+                  </div>
+                  <div class="step-card-content" id="agent-topo-body"></div>
+                </div>
+
+                <!-- Agent 2 Card -->
+                <div class="agent-step-card card-mem">
+                  <div class="step-card-header">
+                    <span class="agent-tag">TRACK 2 • MEMORY & COORDINATOR</span>
+                    <span class="status-indicator">Episodic Recall Synced</span>
+                  </div>
+                  <div class="step-card-content" id="agent-mem-body"></div>
+                </div>
+
+                <!-- Agent 3 Card -->
+                <div class="agent-step-card card-brain">
+                  <div class="step-card-header">
+                    <span class="agent-tag">TRACK 3 • ENTERPRISE BRAIN</span>
+                    <span class="status-indicator">Provenance Verified</span>
+                  </div>
+                  <div class="step-card-content" id="agent-brain-body"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: Live Cypher Terminal -->
+          <div id="tab-cypher" class="tab-content">
+            <div class="cypher-toolbar">
+              <span class="cypher-label">Quick Cypher Queries:</span>
+              <div class="cypher-shortcuts">
+                <button class="chip-btn" data-query="MATCH (p:Person)-[:WORKED_ON]->(:Project) RETURN p">Who knows what?</button>
+                <button class="chip-btn" data-query="MATCH path = (root:Database {id: 'infra_postgres_ledger'})-[*1..3]->(downstream) RETURN downstream">Blast Radius of LedgerDB</button>
+                <button class="chip-btn" data-query="MATCH (inc:PastIncident)-[:RESOLVED_BY]->(rb:Runbook) RETURN inc.name, rb.name">Historical Resolutions</button>
+                <button class="chip-btn" data-query="MATCH (pr:PullRequest)-[:MODIFIES_CONFIG]->(t) RETURN pr.name, t.name">Recent Deploys & PRs</button>
+              </div>
+            </div>
+
+            <div class="cypher-editor-box">
+              <textarea id="cypher-input" class="cypher-textarea" rows="4" placeholder="Type custom Cypher query to run directly on FalkorDB..."></textarea>
+              <button id="btn-run-cypher" class="hud-btn btn-primary">Run Cypher ⚡</button>
+            </div>
+
+            <div class="cypher-output-box">
+              <div class="output-header">
+                <span>Execution Result:</span>
+                <span id="cypher-ms">0.0 ms</span>
+              </div>
+              <pre id="cypher-results-json" class="cypher-json">Click a shortcut above or execute a query...</pre>
+            </div>
+          </div>
+
+          <!-- Tab 3: Episodic Memory Timeline -->
+          <div id="tab-memory" class="tab-content">
+            <div class="memory-container">
+              <h3>FalkorDB Persistent Memory Graph</h3>
+              <p class="memory-desc">Episodic records of past outages, confidence scores, and mitigation runbooks persisted across sessions.</p>
+              <div id="memory-timeline" class="memory-timeline">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
