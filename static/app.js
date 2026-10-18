@@ -125,15 +125,15 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const labelColors = {
-    Service: "#3b82f6",
-    Database: "#10b981",
-    MessageBroker: "#f59e0b",
-    Cache: "#06b6d4",
-    ExternalAPI: "#8b5cf6",
-    Engineer: "#ec4899",
-    PullRequest: "#a855f7",
-    Runbook: "#06b6d4",
-    PastIncident: "#ef4444"
+    Service: "#38bdf8",
+    Database: "#4ade80",
+    MessageBroker: "#ffa666",
+    Cache: "#38bdf8",
+    ExternalAPI: "#a78bfa",
+    Engineer: "#ff76a5",
+    PullRequest: "#a78bfa",
+    Runbook: "#feef85",
+    PastIncident: "#f87171"
   };
 
   // 1. Fetch & Initialize Graph
