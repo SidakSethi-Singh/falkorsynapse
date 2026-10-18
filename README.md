@@ -141,7 +141,7 @@ For the complete list of queries and algorithmic references, see [`cypher_querie
 Requirements: Python 3.10+
 ```bash
 # 1. Clone repository
-git clone https://github.com/your-username/falkorsynapse.git
+git clone https://github.com/SidakSethi-Singh/falkorsynapse.git
 cd falkorsynapse
 
 # 2. Install dependencies
